@@ -14,8 +14,8 @@ type Params struct {
 	DB       int
 }
 
-// NewRedisClient - establishing cache client connection with cache server
-func NewRedisClient(ctx context.Context, cfg Params) (*redis.Client, error) {
+// New - establishing cache client connection with cache server
+func New(ctx context.Context, cfg Params) (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
 		Addr:     cfg.Host + ":" + cfg.Port,
 		Password: cfg.Password,

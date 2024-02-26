@@ -28,7 +28,7 @@ func checkStorageHealth(params Params) error {
 	return nil
 }
 
-func NewMinioClient(cfg Params) (*minio.Client, error) {
+func New(cfg Params) (*minio.Client, error) {
 	minioClient, err := minio.New(cfg.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(cfg.AccessKeyId, cfg.SecretAccessKeyId, ""),
 		Secure: false,

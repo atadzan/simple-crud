@@ -1,0 +1,14 @@
+http:
+  port: 8080
+
+authorization:
+  jwtSigningKey: helloWorld
+  passwordHashSalt: helloWorld12345
+
+postgres:
+  host: localhost
+  port: 5452
+  dbname: testDB
+  username: test_user
+  password: hackMeIfYouCan
+  sslMode: disable
