@@ -10,8 +10,8 @@ type (
 		HTTP          HTTP          `mapstructure:"http"`
 		Authorization Authorization `mapstructure:"authorization"`
 		Postgres      Postgres      `mapstructure:"postgres"`
-		Cache         Cache         `mapstructure:"cache"`
-		Storage       Storage       `mapstructure:"storage"`
+		Cache         Cache         `mapstructure:"redis"`
+		Storage       Storage       `mapstructure:"minio"`
 	}
 	HTTP struct {
 		Port uint16

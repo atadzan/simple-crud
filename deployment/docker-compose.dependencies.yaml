@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+  db:
+    container_name: db-crud
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=helloWorld
+      - POSTGRES_PASSWORD=helloWorld
+      - POSTGRES_DB=helloWorld
+    ports:
+      - '6432:5432'
+    volumes:
+      - db-str:/var/lib/postgresql/data
+
+  minio:
+    container_name: storage-crud
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.minio
+    ports:
+      - '9002:9000'
+      - '9092:9090'
+    depends_on:
+      - db
+    volumes:
+      - minio-str:/storage
+
+  cache:
+    container_name: cache-crud
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '7379:6379'
+    volumes:
+      - cache-str:/data
+
+volumes:
+  cache-str:
+  db-str:
+  minio-str:

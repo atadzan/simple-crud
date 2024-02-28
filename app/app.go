@@ -7,6 +7,7 @@ import (
 	"github.com/atadzan/simple-crud/pkg/repository"
 	"github.com/atadzan/simple-crud/third_party/cache"
 	"github.com/atadzan/simple-crud/third_party/database"
+	"github.com/atadzan/simple-crud/third_party/server"
 	"github.com/atadzan/simple-crud/third_party/storage"
 )
 
@@ -50,6 +51,8 @@ func Init(configPath string) error {
 	})
 	repo := repository.New(dbClient, storageClient, cacheClient)
 	ctl := controller.New(repo)
-	ctl.Init()
+	app := ctl.InitRoutes()
+
+	server.StartServerWithGracefulShutdown(app, appCfg.HTTP.Port)
 	return nil
 }

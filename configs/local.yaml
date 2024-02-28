@@ -3,12 +3,23 @@ http:
 
 authorization:
   jwtSigningKey: helloWorld
-  passwordHashSalt: helloWorld12345
+  passwordHashSalt: helloWorld1234
 
 postgres:
   host: localhost
-  port: 5452
-  dbname: testDB
-  username: test_user
-  password: hackMeIfYouCan
+  port: 6432
+  dbname: helloWorld
+  username: helloWorld
+  password: helloWorld
   sslMode: disable
+
+redis:
+  host: localhost
+  port: 7379
+  password: ""
+  db: 1
+
+minio:
+  endpoint: localhost:9002
+  accessKeyId: helloWorld
+  secretAccessKeyId: helloWorld

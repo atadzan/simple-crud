@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/atadzan/simple-crud/pkg/models"
 	"github.com/atadzan/simple-crud/pkg/repository/cache"
 	"github.com/atadzan/simple-crud/pkg/repository/db"
 	"github.com/atadzan/simple-crud/pkg/repository/storage"
@@ -12,11 +13,11 @@ import (
 )
 
 type Repo interface {
-	GetAll(ctx context.Context, page, limit uint32) (models.BookListItem, error)
-	GetById(ctx context.Context, uniqueId string) (models.BookDetailedInfo, error)
-	Create(ctx context.Context, params models.CreateParams) error
-	Update(ctx context.Context, params models.UpdateParams) error
-	Delete(ctx context.Context, uniqueId string) error
+	GetAll(ctx context.Context, page, limit uint32) ([]models.BookList, error)
+	GetById(ctx context.Context, id uint32) (models.BookDetailed, error)
+	Create(ctx context.Context, params models.CreateBookParams) error
+	Update(ctx context.Context, params models.UpdateBookParams) error
+	Delete(ctx context.Context, id uint32) error
 }
 
 type repo struct {
@@ -33,18 +34,18 @@ func New(dbClient *pgxpool.Pool, minioClient *minio.Client, cacheClient *redis.C
 	}
 }
 
-func (r *repo) GetAll(ctx context.Context, page, limit uint32) (models.BookListItem, error) {
-	return
+func (r *repo) GetAll(ctx context.Context, page, limit uint32) ([]models.BookList, error) {
+	return nil, nil
 }
-func (r *repo) GetById(ctx context.Context, uniqueId string) (models.BookDetailedInfo, error) {
-	return
+func (r *repo) GetById(ctx context.Context, id uint32) (models.BookDetailed, error) {
+	return models.BookDetailed{}, nil
 }
-func (r *repo) Create(ctx context.Context, params models.CreateParams) error {
-	return
+func (r *repo) Create(ctx context.Context, params models.CreateBookParams) error {
+	return nil
 }
-func (r *repo) Update(ctx context.Context, params models.UpdateParams) error {
-	return
+func (r *repo) Update(ctx context.Context, params models.UpdateBookParams) error {
+	return nil
 }
-func (r *repo) Delete(ctx context.Context, uniqueId string) error {
-	return
+func (r *repo) Delete(ctx context.Context, id uint32) error {
+	return nil
 }

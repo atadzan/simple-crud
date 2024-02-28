@@ -1,54 +1,33 @@
 package server
 
 import (
-	"context"
-
-	"github.com/go-errors/errors"
+	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
-	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-type Server struct {
-	httpServer *http.Server
-}
+func StartServerWithGracefulShutdown(app *fiber.App, port uint16) {
+	idleConnClosed := make(chan struct{})
 
-// Run - runs HTTP server
-func (s *Server) Run(port string, handler http.Handler) error {
-	s.httpServer = &http.Server{
-		Addr:              port,
-		Handler:           handler,
-		MaxHeaderBytes:    5 << 20,
-		ReadHeaderTimeout: 10 * time.Second,
-		WriteTimeout:      10 * time.Second,
+	go func() {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt)
+		<-sigint
+
+		if err := app.Shutdown(); err != nil {
+			log.Printf("Oops... Server is not shutting down! Reason: %v", err)
+		}
+
+		close(idleConnClosed)
+	}()
+
+	// Run server.
+	if err := app.Listen(fmt.Sprint(":", port)); err != nil {
+		log.Printf("Oops... Server is not running! Reason: %v", err)
 	}
-	if err := s.httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		return errors.New(err)
-	}
 
-	return nil
-}
-
-// GracefulShutDown - shutdowns HTTP server
-func (s *Server) GracefulShutDown(ctx context.Context) error {
-	// Wait for interrupt signal to gracefully shut down the server with
-	// a timeout of 5 seconds.
-	quit := make(chan os.Signal, 1)
-
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Println("Shutting down the server...")
-
-	// The context is used to inform the server it has 5 seconds to finish
-	// the request it is currently handling
-	timeoutCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	if err := s.httpServer.Shutdown(timeoutCtx); err != nil {
-		return errors.New(err)
-	}
-	return nil
+	<-idleConnClosed
 }

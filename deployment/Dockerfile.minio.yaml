@@ -1,0 +1,13 @@
+FROM quay.io/minio/minio
+
+RUN mkdir /storage
+
+VOLUME /storage
+
+ENV MINIO_ROOT_USER=beletstorage
+ENV MINIO_ROOT_PASSWORD=beletstorage
+ENV MINIO_VOLUMES="/storage"
+EXPOSE 9000
+EXPOSE 9090
+
+CMD ["minio", "server", "/storage", "--console-address", ":9090"]
