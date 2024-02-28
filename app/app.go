@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 
+	"github.com/atadzan/simple-crud/config"
 	"github.com/atadzan/simple-crud/pkg/controller"
 	"github.com/atadzan/simple-crud/pkg/repository"
 	"github.com/atadzan/simple-crud/third_party/cache"
@@ -13,7 +14,7 @@ import (
 
 func Init(configPath string) error {
 	// init app config from input path
-	appCfg, err := loadConfig(configPath)
+	appCfg, err := config.LoadConfig(configPath)
 	if err != nil {
 		return err
 	}
@@ -50,7 +51,7 @@ func Init(configPath string) error {
 		SecretAccessKeyId: appCfg.Storage.SecretAccessKeyId,
 	})
 	repo := repository.New(dbClient, storageClient, cacheClient)
-	ctl := controller.New(repo)
+	ctl := controller.New(repo, appCfg.Authorization)
 	app := ctl.InitRoutes()
 
 	server.StartServerWithGracefulShutdown(app, appCfg.HTTP.Port)

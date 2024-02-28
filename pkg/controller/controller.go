@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/atadzan/simple-crud/app"
+	"github.com/atadzan/simple-crud/config"
 	"github.com/atadzan/simple-crud/pkg/repository"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -11,10 +11,10 @@ import (
 
 type Controller struct {
 	repo       repository.Repo
-	authConfig app.Authorization
+	authConfig config.Authorization
 }
 
-func New(repo repository.Repo, authCfg app.Authorization) *Controller {
+func New(repo repository.Repo, authCfg config.Authorization) *Controller {
 	return &Controller{
 		repo:       repo,
 		authConfig: authCfg,
@@ -48,7 +48,7 @@ func (ctl *Controller) InitRoutes() (app *fiber.App) {
 		books := v1.Group("/")
 		{
 			books.Get("/", ctl.getBooks)
-			books.Get("/:id", ctl.getBooks)
+			books.Get("/:id", ctl.getBookById)
 			books.Get("/search", ctl.searchBook)
 		}
 		authorized := books.Group("/")

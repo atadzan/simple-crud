@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"github.com/go-errors/errors"
@@ -41,8 +41,8 @@ type (
 	}
 )
 
-// loadConfig - initializing app config from yaml file
-func loadConfig(configFile string) (appCfg Config, err error) {
+// LoadConfig - initializing app config from yaml file
+func LoadConfig(configFile string) (appCfg Config, err error) {
 	viper.SetConfigFile(configFile)
 	if err = viper.ReadInConfig(); err != nil {
 		err = errors.New(err)
