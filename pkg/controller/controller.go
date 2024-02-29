@@ -59,7 +59,7 @@ func (ctl *Controller) InitRoutes() (app *fiber.App) {
 			authorized.Post("/", ctl.createBook)
 			authorized.Patch("/:id", ctl.updateBook)
 			authorized.Delete("/:id", ctl.deleteBook)
-			authorized.Get("/img/:path", ctl.downloadBookIMG)
+			authorized.Get("/img/:path/download", ctl.downloadBookIMG)
 		}
 	}
 	return

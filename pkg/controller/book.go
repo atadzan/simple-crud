@@ -95,6 +95,12 @@ func (ctl *Controller) updateBook(c *fiber.Ctx) error {
 		log.Println(err)
 		return c.Status(fiber.StatusBadRequest).JSON(newMessage("invalid input params"))
 	}
+	bookId, err := c.ParamsInt("id")
+	if err != nil || bookId == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(newMessage("invalid id param"))
+	}
+	input.AuthorId = getAuthorIDFromCtx(c)
+	input.BookId = uint32(bookId)
 	if err := ctl.repo.Update(c.Context(), input); err != nil {
 		log.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(newMessage(errInternalServerMsg))

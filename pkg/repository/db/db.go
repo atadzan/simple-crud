@@ -257,5 +257,4 @@ func (d *db) Search(ctx context.Context, params models.SearchParams) (books []mo
 		books = append(books, book)
 	}
 	return
-	return
 }

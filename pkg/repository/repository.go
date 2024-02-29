@@ -90,10 +90,10 @@ func (r *repo) GetById(ctx context.Context, id int) (book models.BookDetailed, e
 		if err != nil {
 			return
 		}
-		// TODO Fix problem
-		//if err = r.cache.Set(ctx, book); err != nil {
-		//	log.Println(err)
-		//}
+
+		if err = r.cache.Set(ctx, book); err != nil {
+			log.Println(err)
+		}
 	}
 
 	return
