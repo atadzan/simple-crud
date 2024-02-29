@@ -50,7 +50,7 @@ func Init(configPath string) error {
 		AccessKeyId:       appCfg.Storage.AccessKeyId,
 		SecretAccessKeyId: appCfg.Storage.SecretAccessKeyId,
 	})
-	repo := repository.New(dbClient, storageClient, cacheClient)
+	repo := repository.New(dbClient, storageClient, cacheClient, appCfg.HTTP.Domain)
 	ctl := controller.New(repo, appCfg.Authorization)
 	app := ctl.InitRoutes()
 

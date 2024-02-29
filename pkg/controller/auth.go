@@ -100,7 +100,7 @@ func (ctl *Controller) signIn(c *fiber.Ctx) error {
 		case errors.Is(err, db.ErrNotFound):
 			return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 		default:
-			return c.Status(fiber.StatusInternalServerError).JSON(errInternalServerMsg)
+			return c.Status(fiber.StatusInternalServerError).JSON(newMessage(errInternalServerMsg))
 		}
 	}
 	accessToken := generateAccessToken(authorId, ctl.authConfig.JWTSigningKey)

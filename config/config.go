@@ -14,7 +14,8 @@ type (
 		Storage       Storage       `mapstructure:"minio"`
 	}
 	HTTP struct {
-		Port uint16
+		Port   uint16 `mapstructure:"port"`
+		Domain string `mapstructure:"domain"`
 	}
 	Authorization struct {
 		JWTSigningKey    string `mapstructure:"jwtSigningKey"`

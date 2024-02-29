@@ -27,6 +27,7 @@ func (ctl *Controller) InitRoutes() (app *fiber.App) {
 			AppName:           "Simple CRUD app",
 			BodyLimit:         100 * 1024 * 1024,
 			EnablePrintRoutes: true,
+			StrictRouting:     true,
 		})
 
 	app.Use(
@@ -44,19 +45,21 @@ func (ctl *Controller) InitRoutes() (app *fiber.App) {
 	{
 		v1.Post("/register", ctl.register)
 		v1.Post("/signIn", ctl.signIn)
+
 		v1.Get("/genres", ctl.getBookGenres)
-		books := v1.Group("/")
+
+		books := v1.Group("/books")
 		{
 			books.Get("/", ctl.getBooks)
-			books.Get("/:id", ctl.getBookById)
 			books.Get("/search", ctl.searchBook)
+			books.Get("/:id", ctl.getBookById)
 		}
 		authorized := books.Group("/")
 		{
 			authorized.Post("/", ctl.createBook)
 			authorized.Patch("/:id", ctl.updateBook)
 			authorized.Delete("/:id", ctl.deleteBook)
-			authorized.Get("/img/download", ctl.downloadBookIMG)
+			authorized.Get("/img/:path", ctl.downloadBookIMG)
 		}
 	}
 	return
